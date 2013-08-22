@@ -1,7 +1,7 @@
 "---------------------------------------------------------------------------
 " フォントに関する設定
 "
-set guifont=Osaka-Mono:h16
+set guifont=Osaka-Mono:h18
 
 "---------------------------------------------------------------------------
 " 日本語入力に関する設定:
@@ -17,7 +17,7 @@ if has('multi_byte_ime') || has('xim')
     "set imactivatekey=s-space
   endif
   " 挿入モードでのIME状態を記憶させない場合、次行のコメントを解除
-  "inoremap <silent> <ESC> <ESC>:set iminsert=0<CR>
+  inoremap <silent> <ESC> <ESC>:set iminsert=0<CR>
 endif
 
 
@@ -67,42 +67,91 @@ set cursorline cursorcolumn
 
 "
 "airline
-let g:airline_theme = 'landscape'
-let g:airline_left_sep = '⮀'
-let g:airline_left_alt_sep = '⮁'
-let g:airline_right_sep = '⮂'
-let g:airline_right_alt_sep = '⮃'
-let g:airline_branch_prefix = '⭠ '
-let g:airline#extensions#readonly#symbol = '⭤ '
-let g:airline_linecolumn_prefix = ''
-let g:airline#extensions#hunks#non_zero_only = 1
-let g:airline#extensions#whitespace#enabled = 0
-let g:airline#extensions#branch#enabled = 0
-let g:airline#extensions#readonly#enabled = 0
+"let g:airline_theme = 'landscape'
+"let g:airline_left_sep = '⮀'
+"let g:airline_left_alt_sep = '⮁'
+"let g:airline_right_sep = '⮂'
+"let g:airline_right_alt_sep = '⮃'
+"let g:airline_branch_prefix = '⭠ '
+"let g:airline#extensions#readonly#symbol = '⭤ '
+"let g:airline_linecolumn_prefix = ''
+"let g:airline#extensions#hunks#non_zero_only = 1
+"let g:airline#extensions#whitespace#enabled = 1
+"let g:airline#extensions#branch#enabled = 0
+"let g:airline#extensions#readonly#enabled = 0
 "let g:airline_section_b = "%t%( %M%)"
-let g:airline_section_b =
-      \ '%{airline#extensions#branch#get_head()}' .
-      \ '%{""!=airline#extensions#branch#get_head()?("  " . g:airline_left_alt_sep . " "):""}' .
-      \ '%{airline#extensions#readonly#get_mark()}' .
-      \ '%t%( %M%)'
-let g:airline_section_c = ''
-let s:sep = " %{get(g:, 'airline_right_alt_sep', '')} "
-let g:airline_section_x =
-      \ '%{strlen(&fileformat)?&fileformat:""}'.s:sep.
-      \ '%{strlen(&fenc)?&fenc:&enc}'.s:sep.
-      \ '%{strlen(&filetype)?&filetype:"no ft"}'
-let g:airline_section_y = '%3p%%'
-let g:airline_section_z = get(g:, 'airline_linecolumn_prefix', '').'%3l:%-2v'
-let g:airline_inactive_collapse = 0
-function! AirLineForce()
-  let g:airline_mode_map.__ = ''
-  let w:airline_render_left = 1
-  let w:airline_render_right = 1
-endfunction
-augroup AirLineForce
-  autocmd!
-  autocmd VimEnter * call add(g:airline_statusline_funcrefs, function('AirLineForce'))
-augroup END
+"let g:airline_section_b =
+"      \ '%{airline#extensions#branch#get_head()}' .
+"      \ '%{""!=airline#extensions#branch#get_head()?("  " . g:airline_left_alt_sep . " "):""}' .
+"      \ '%{airline#extensions#readonly#get_mark()}' .
+"      \ '%t%( %M%)'
+"let g:airline_section_c = ''
+"let s:sep = " %{get(g:, 'airline_right_alt_sep', '')} "
+"let g:airline_section_x =
+"      \ '%{strlen(&fileformat)?&fileformat:""}'.s:sep.
+"      \ '%{strlen(&fenc)?&fenc:&enc}'.s:sep.
+"      \ '%{strlen(&filetype)?&filetype:"no ft"}'
+"let g:airline_section_y = '%3p%%'
+"let g:airline_section_z = get(g:, 'airline_linecolumn_prefix', '').'%3l:%-2v'
+"let g:airline_inactive_collapse = 0
+"function! AirLineForce()
+"  let g:airline_mode_map.__ = ''
+"  let w:airline_render_left = 1
+"  let w:airline_render_right = 1
+"endfunction
+"augroup AirLineForce
+"  autocmd!
+"  autocmd VimEnter * call add(g:airline_statusline_funcrefs, function('AirLineForce'))
+"augroup END
+
+let g:lightline = {
+        \ 'colorscheme': 'solarized',
+        \ 'mode_map': { 'c': 'NORMAL' },
+        \ 'active': {
+        \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ]
+        \ },
+        \ 'component_func': {
+        \   'modified': 'MyModified',
+        \   'readonly': 'MyReadonly',
+        \   'fugitive': 'MyFugitive',
+        \   'filename': 'MyFilename',
+        \   'fileformat': 'MyFileformat',
+        \   'filetype': 'MyFiletype',
+        \   'fileencoding': 'MyFileencoding',
+        \   'mode': 'MyMode',
+        \ },
+        \ 'separator': { 'left': '⮀', 'right': '⮂' },
+        \ 'subseparator': { 'left': '⮁', 'right': '⮃' }
+        \ }
+  function! MyModified()
+    return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+  endfunction
+  function! MyReadonly()
+    return &ft !~? 'help\|vimfiler\|gundo' && &ro ? '⭤' : ''
+  endfunction
+  function! MyFilename()
+    return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
+          \ (&ft == 'vimfiler' ? vimfiler#get_status_string() : 
+          \  &ft == 'unite' ? unite#get_status_string() : 
+          \  &ft == 'vimshell' ? substitute(b:vimshell.current_dir,expand('~'),'~','') : 
+          \ '' != expand('%t') ? expand('%t') : '[No Name]') .
+          \ ('' != MyModified() ? ' ' . MyModified() : '')
+  endfunction
+  function! MyFugitive()
+    return &ft !~? 'vimfiler\|gundo' && exists('*fugitive#head') && len(fugitive#head()) ? '⭠ '.fugitive#head() : ''
+  endfunction
+  function! MyFileformat()
+    return winwidth('.') > 60 ? &fileformat : ''
+  endfunction
+  function! MyFiletype()
+    return winwidth('.') > 60 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+  endfunction
+  function! MyFileencoding()
+    return winwidth('.') > 60 ? (strlen(&fenc) ? &fenc : &enc) : ''
+  endfunction
+  function! MyMode()
+    return winwidth('.') > 60 ? lightline#mode() : ''
+  endfunction
 
 
 "---------------------------------------------------------------------------
