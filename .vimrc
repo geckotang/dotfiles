@@ -145,8 +145,8 @@ let g:fuf_enumeratingLimit = 20
 let g:fuf_file_exclude = '\v\.DS_Store|\.git|\.swp|\.svn'
  
 " zencoding setting 
-let g:user_zen_expandabbr_key = '<C-d>'
-
+let g:user_zen_expandabbr_key = '<C-e>'
+let g:user_emmet_leader_key = '<c-e>'
 
 " ---------------------------------------------------------------------------
 " 編集関連
@@ -201,17 +201,15 @@ filetype on
 "---------------------------------------------------------------------------
 "ステータスラインの設定
 set statusline=%{expand('%:p:t')}\ %<\(%{SnipMid(expand('%:p:h'),80-len(expand('%:p:t')),'...')}\)%=\ %m%r%y%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}[%3l,%3c]
- 
+
 function! SnipMid(str, len, mask)
   if a:len >= len(a:str)
     return a:str
   elseif a:len <= len(a:mask)
     return a:mask
   endif
- 
   let len_head = (a:len - len(a:mask)) / 2
   let len_tail = a:len - len(a:mask) - len_head
- 
   return (len_head > 0 ? a:str[: len_head - 1] : '') . a:mask . (len_tail > 0 ? a:str[-len_tail :] : '')
 endfunction
 
@@ -225,18 +223,17 @@ endfunction
  
 "---------------------------------------------------------------------------
 "neocomplcacheによる補完 
- 
 let g:neocomplcache_enable_at_startup = 1
-if !exists("g:neosnippet#snippets_directory")
-    let g:neosnippet#snippets_directory=""
-endif
-let g:neosnippet#snippets_directory = $VIM.'\vim73\snippets'
-command! -nargs=* Es NeoComplCacheEditSnippets
-imap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_jump_or_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_jump_or_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
-if !exists('g:neocomplcache_omni_patterns')
-let g:neocomplcache_omni_patterns = {}
-endif
+"if !exists("g:neosnippet#snippets_directory")
+"    let g:neosnippet#snippets_directory=""
+"endif
+"let g:neosnippet#snippets_directory = $HOME.'/.vim/snippets'
+"command! -nargs=* Es NeoComplCacheEditSnippets
+"imap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_jump_or_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+"smap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_jump_or_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+"if !exists('g:neocomplcache_omni_patterns')
+"let g:neocomplcache_omni_patterns = {}
+"endif
 
 
 "---------------------------------------------------------------------------
@@ -249,11 +246,13 @@ call vundle#rc()
 Bundle 'Shougo/neocomplcache'
 Bundle 'thinca/vim-ref'
 Bundle 'thinca/vim-quickrun'
-Bundle 'Lokaltog/vim-powerline'
+"Bundle 'Lokaltog/vim-powerline'
+Bundle 'bling/vim-airline'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-surround'
 Bundle 'scrooloose/nerdtree'
-Bundle 'mattn/zencoding-vim'
+Bundle 'mattn/emmet-vim'
+Bundle 'itchyny/landscape.vim'
 " vim-scripts repos
 Bundle 'L9'
 Bundle 'FuzzyFinder'
