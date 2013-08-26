@@ -42,7 +42,7 @@ set ruler
 " タブや改行を表示 (list:表示)
 set list
 " どの文字でタブや改行を表示するかを設定
-set listchars=tab:>-,extends:<,precedes:>,trail:-,eol:$
+set listchars=tab:▸\ ,extends:<,precedes:>,trail:-,eol:$
 " 全角スペース・行末のスペース・タブの可視化
 if has("syntax")
     syntax on
@@ -238,6 +238,14 @@ let g:neocomplcache_enable_at_startup = 1
 
 "---------------------------------------------------------------------------
 " Vundle
+let g:indent_guides_auto_colors = 1
+let g:indent_guides_enable_on_vim_startup=1
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=3
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
+
+
+"---------------------------------------------------------------------------
+" Vundle
 set nocompatible
 filetype off
 set rtp+=~/.vim/vundle.git/
@@ -246,14 +254,14 @@ call vundle#rc()
 Bundle 'Shougo/neocomplcache'
 Bundle 'thinca/vim-ref'
 Bundle 'thinca/vim-quickrun'
-"Bundle 'Lokaltog/vim-powerline'
-"Bundle 'bling/vim-airline'
 Bundle 'itchyny/lightline.vim'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-surround'
 Bundle 'scrooloose/nerdtree'
 Bundle 'mattn/emmet-vim'
 Bundle 'itchyny/landscape.vim'
+Bundle 'editorconfig/editorconfig-vim'
+Bundle 'nathanaelkane/vim-indent-guides'
 " vim-scripts repos
 Bundle 'L9'
 Bundle 'FuzzyFinder'

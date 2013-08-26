@@ -54,7 +54,7 @@ set ruler
 " Highlighting the current line & column in VIM
 " au WinLeave * set nocursorline nocursorcolumn
 " au WinEnter * set cursorline cursorcolumn
-set cursorline cursorcolumn
+set cursorline
 
 "---------------------------------------------------------------------------
 "Powerline
@@ -162,6 +162,7 @@ set background=dark
 if has('gui_macvim')
   set transparency=10
 endif
+
 
 "---------------------------------------------------------------------------
 "全画面
