@@ -86,8 +86,40 @@ esac
 
 alias ll='ls -l'
 
+#rbenv rehashの自動化するためにgemコマンドのラッパーを作る
+#http://rhysd.hatenablog.com/entry/20120226/1330265121
+
+function gem(){
+	$HOME/.rbenv/shims/gem $*
+	if [ "$1" = "install" ] || [ "$1" = "i" ] || [ "$1" = "uninstall" ] || [ "$1" = "uni" ]
+	then
+		rbenv rehash
+		rehash
+	fi
+}
+
 #remove .DS_store from dir & subdir
 alias rmds="find . -name '*.DS_Store' -type f -delete"
+
+# bundle 
+alias be="bundle exec"
+alias bi="bundle install --without=production --path vendor/bundle"
+
+# Marked
+# http://markedapp.com/
+function mrkd() {
+  open -a Marked $1
+}
+
+
+# server
+function server() {
+  local port="${1:-8000}"
+  sleep 1 && open "http://localhost:${port}/" &
+  # Set the default Content-Type to `text/plain` instead of `application/octet-stream`
+  # And serve everything as UTF-8 (although not technically correct, this doesn’t break anything for binary files)
+  python -c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=UTF-8";\nSimpleHTTPServer.test();' "$port"
+}
 
 # 環境ごとの設定読み込む
 [ -f ~/.zshrc_env ] && source ~/.zshrc_env

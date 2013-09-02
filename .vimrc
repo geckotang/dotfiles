@@ -237,11 +237,26 @@ let g:neocomplcache_enable_at_startup = 1
 
 
 "---------------------------------------------------------------------------
-" Vundle
+" IndengGuide
 let g:indent_guides_auto_colors = 1
 let g:indent_guides_enable_on_vim_startup=1
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=3
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
+
+
+
+"---------------------------------------------------------------------------
+" Quickrun
+" http://blog.glidenote.com/blog/2013/01/10/vim-quickrun-marked/
+let g:quickrun_config = {}
+let g:quickrun_config.markdown = {
+      \ 'outputter' : 'null',
+      \ 'command'   : 'open',
+      \ 'cmdopt'    : '-a',
+      \ 'args'      : 'Marked',
+      \ 'exec'      : '%c %o %a %s',
+      \ }
+
 
 
 "---------------------------------------------------------------------------
@@ -262,6 +277,9 @@ Bundle 'mattn/emmet-vim'
 Bundle 'itchyny/landscape.vim'
 Bundle 'editorconfig/editorconfig-vim'
 Bundle 'nathanaelkane/vim-indent-guides'
+Bundle 'jelera/vim-javascript-syntax'
+Bundle 'teramako/jscomplete-vim'
+Bundle 'cakebaker/scss-syntax.vim'
 " vim-scripts repos
 Bundle 'L9'
 Bundle 'FuzzyFinder'
