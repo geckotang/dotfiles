@@ -1,4 +1,7 @@
 "---------------------------------------------------------------------------
+" クリップボードに関する設定
+set clipboard=unnamed,autoselect
+"---------------------------------------------------------------------------
 " 検索の挙動に関する設定:
 "
 " 検索時に大文字小文字を無視 (noignorecase:無視しない)
@@ -123,7 +126,7 @@ nnoremap <silent> tn :<C-u>tabnext<CR>
 nnoremap <silent> tp :<C-u>tabprevious<CR>
  
 " Map double-tap Esc to clear search highlights
-nnoremap <silent> <Esc><Esc> <Esc>:nohlsearch<CR><Esc>
+nnoremap <silent> <Esc><Esc> <Esc>:nohlsearch<CR><Esc>:let &transparency = 10<Cr><C-l>
  
 " very magic
 nnoremap / /\v
@@ -224,26 +227,36 @@ endfunction
 "---------------------------------------------------------------------------
 "neocomplcacheによる補完 
 let g:neocomplcache_enable_at_startup = 1
-"if !exists("g:neosnippet#snippets_directory")
-"    let g:neosnippet#snippets_directory=""
-"endif
-"let g:neosnippet#snippets_directory = $HOME.'/.vim/snippets'
-"command! -nargs=* Es NeoComplCacheEditSnippets
-"imap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_jump_or_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
-"smap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_jump_or_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
-"if !exists('g:neocomplcache_omni_patterns')
-"let g:neocomplcache_omni_patterns = {}
-"endif
+
+"---------------------------------------------------------------------------
+"neosnippet
+
+" <TAB>: completion.
+" inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
+
+" Plugin key-mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+
+" SuperTab like snippets behavior.
+" imap <expr><TAB> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+imap <expr><TAB> pumvisible() ? "\<C-n>" : neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+" For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
+
 
 
 "---------------------------------------------------------------------------
-" IndengGuide
+" IndentGuide
 let g:indent_guides_auto_colors = 1
 let g:indent_guides_enable_on_vim_startup=1
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=3
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
-
-
 
 "---------------------------------------------------------------------------
 " Quickrun
@@ -267,6 +280,7 @@ set rtp+=~/.vim/vundle.git/
 call vundle#rc()
 " original repos on github
 Bundle 'Shougo/neocomplcache'
+Bundle 'Shougo/neosnippet'
 Bundle 'thinca/vim-ref'
 Bundle 'thinca/vim-quickrun'
 Bundle 'itchyny/lightline.vim'
