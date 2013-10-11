@@ -270,7 +270,9 @@ let g:quickrun_config.markdown = {
       \ 'exec'      : '%c %o %a %s',
       \ }
 
-
+"---------------------------------------------------------------------------
+" Filetype
+autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
 
 "---------------------------------------------------------------------------
 " Vundle
@@ -291,7 +293,8 @@ Bundle 'mattn/emmet-vim'
 Bundle 'itchyny/landscape.vim'
 Bundle 'editorconfig/editorconfig-vim'
 Bundle 'nathanaelkane/vim-indent-guides'
-Bundle 'jelera/vim-javascript-syntax'
+"Bundle 'jelera/vim-javascript-syntax'
+Bundle "pangloss/vim-javascript"
 Bundle 'teramako/jscomplete-vim'
 Bundle 'cakebaker/scss-syntax.vim'
 " vim-scripts repos

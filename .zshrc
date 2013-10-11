@@ -121,6 +121,14 @@ function server() {
   python -c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=UTF-8";\nSimpleHTTPServer.test();' "$port"
 }
 
+# iOSシミュレータ起動
+function mobile-safari() {
+  local VERSION=$1
+  local URL=$2
+  /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Applications/iPhone\ Simulator.app/Contents/MacOS/iPhone\ Simulator -SimulateApplication /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator$VERSION.sdk/Applications/MobileSafari.app/MobileSafari -u $URL
+}
+
+
 # 環境ごとの設定読み込む
 [ -f ~/.zshrc_env ] && source ~/.zshrc_env
 
