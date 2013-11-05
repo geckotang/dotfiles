@@ -1,4 +1,51 @@
 "---------------------------------------------------------------------------
+" lightline
+let g:lightline = {
+      \ 'colorscheme': 'solarized',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'fugitive', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'fugitive': 'MyFugitive',
+      \   'readonly': 'MyReadonly',
+      \   'modified': 'MyModified'
+      \ },
+      \ 'separator': { 'left': '⮀', 'right': '⮂' },
+      \ 'subseparator': { 'left': '⮁', 'right': '⮃' }
+      \ }
+
+function! MyModified()
+  if &filetype == "help"
+    return ""
+  elseif &modified
+    return "+"
+  elseif &modifiable
+    return ""
+  else
+    return ""
+  endif
+endfunction
+
+function! MyReadonly()
+  if &filetype == "help"
+    return ""
+  elseif &readonly
+    return "⭤"
+  else
+    return ""
+  endif
+endfunction
+
+function! MyFugitive()
+  if exists("*fugitive#head")
+    let _ = fugitive#head()
+    return strlen(_) ? '⭠ '._ : ''
+  endif
+  return ''
+endfunction
+
+"---------------------------------------------------------------------------
 " クリップボードに関する設定
 set clipboard=unnamed,autoselect
 "---------------------------------------------------------------------------
@@ -273,6 +320,8 @@ let g:quickrun_config.markdown = {
 "---------------------------------------------------------------------------
 " Filetype
 autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+" vimにcoffeeファイルタイプを認識させる
+au BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
 
 "---------------------------------------------------------------------------
 " Vundle
@@ -293,6 +342,7 @@ Bundle 'mattn/emmet-vim'
 Bundle 'itchyny/landscape.vim'
 Bundle 'editorconfig/editorconfig-vim'
 Bundle 'nathanaelkane/vim-indent-guides'
+Bundle 'kchmck/vim-coffee-script'
 "Bundle 'jelera/vim-javascript-syntax'
 Bundle "pangloss/vim-javascript"
 Bundle 'teramako/jscomplete-vim'
@@ -301,3 +351,4 @@ Bundle 'cakebaker/scss-syntax.vim'
 Bundle 'L9'
 Bundle 'FuzzyFinder'
 filetype plugin indent on
+

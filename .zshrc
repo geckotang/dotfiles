@@ -12,6 +12,9 @@ zstyle ':vcs_info:git:*' stagedstr "+"
 zstyle ':vcs_info:git:*' unstagedstr "*"
 zstyle ':vcs_info:*' formats '%{${fg[red]}%}(%s %b%{${fg[cyan]}%}%c%u%{${fg[red]}%}) %{$reset_color%}'
 
+#hub
+#function git(){hub "$@"}
+
 setopt prompt_subst
 precmd () {
   LANG=en_US.UTF-8 vcs_info

@@ -117,7 +117,7 @@ function jqw() {
 if [ -f /Applications/MacVim.app/Contents/MacOS/Vim ]; then
   #alias vim="/Applications/MacVim.app/Contents/MacOS/Vim -g --remote-tab-silent"
   #常に新規タブで開く
-  alias vim="mvim -g --remote-tab-silent"
+  alias vim="mvim -g"
   alias vimdiff="/Applications/MacVim.app/Contents/MacOS/mvimdiff -g"
 fi
 
