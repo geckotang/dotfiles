@@ -1,0 +1,38 @@
+[user]
+	name = geckotang
+	email = macky1207@gmail.com
+[alias]
+	ignore = !"f( { local s=$1; shift; \
+		while [ $# -gt 0 ]; do s="$s,$1"; shift; done;\
+		curl "http://gitignore.io/api/$s"; }; f"
+	a = !git add . && git status
+	aa = !git add -A && git status
+	b = branch -a
+	c = commit
+	ca = commit -a
+	co = checkout
+	d = diff
+	l = log
+	lg = log --graph --decorate --pretty=oneline --abbrev-commit --all
+	ln = log --name-status
+	ls = log --stat
+	lo = log --oneline
+	s = status
+	st = stash
+[core]
+	editor = /usr/bin/vim -c \"set fenc=utf-8\"
+	excludesfile = ~/.gitignore_global
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[merge]
+	ff = false
+[color]
+	ui = true
+[pager]
+        log = diff-highlight | less
+        show = diff-highlight | less
+	diff = diff-highlight | less
