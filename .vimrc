@@ -382,6 +382,8 @@ nnoremap <silent> ,gh :<C-u>GitGutterLineHighlightsToggle<CR>
 Bundle "pangloss/vim-javascript"
 Bundle 'teramako/jscomplete-vim'
 Bundle 'cakebaker/scss-syntax.vim'
+Bundle 'hokaccha/vim-html5validator'
+
 " vim-scripts repos
 Bundle 'L9'
 Bundle 'FuzzyFinder'
