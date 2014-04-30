@@ -42,7 +42,24 @@ set mousehide
 "---------------------------------------------------------------------------
 "カラースキームと透明度の設定
 "
-colorscheme wombat
+"colorscheme hybrid
+"let g:hybrid_use_iTerm_colors = 1
+"
+"colorscheme wombat
+"
+colorscheme jellybeans
+let g:jellybeans_use_lowcolor_black = 0
+
+"colorscheme molokai
+"let g:molokai_original = 1
+"let g:rehash256 = 1
+
+"colorscheme h2u_black
+
+"colorscheme moria
+
+"colorscheme github
+
 set background=dark
 if has('gui_macvim')
   set transparency=10

@@ -152,8 +152,10 @@ command! FKwbd let kwbd_bn= bufnr("%")|enew|exe "bdel! ".kwbd_bn|unlet kwbd_bn
 " ファイル操作に関する設定:
 "
 " バックアップファイルを作成しない (次行の先頭の " を削除すれば有効になる)
-set backupdir=$HOME/vimbackup
-set directory=$HOME/vimbackup
+"set backupdir=$HOME/vimbackup
+"set directory=$HOME/vimbackup
+set nobackup
+set noswapfile
 
 "---------------------------------------------------------------------------
 " キーマッピング
@@ -345,18 +347,19 @@ let g:quickrun_config.markdown = {
 "---------------------------------------------------------------------------
 " Filetype
 autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
-" vimにcoffeeファイルタイプを認識させる
 au BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
+au BufRead,BufNewFile,BufReadPre *.jade   set filetype=jade
+au BufRead,BufNewFile,BufReadPre *.styl   set filetype=sass
 
 "---------------------------------------------------------------------------
 " Vundle
 set nocompatible
-filetype off
 set rtp+=~/.vim/vundle.git/
 call vundle#rc()
 " original repos on github
 Bundle 'Shougo/neocomplcache'
 Bundle 'Shougo/neosnippet'
+Bundle 'Shougo/neosnippet-snippets'
 Bundle 'thinca/vim-ref'
 Bundle 'thinca/vim-quickrun'
 Bundle 'itchyny/lightline.vim'
@@ -370,6 +373,14 @@ Bundle 'editorconfig/editorconfig-vim'
 Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'kchmck/vim-coffee-script'
 
+"カラースキーム
+Bundle 'w0ng/vim-hybrid'
+Bundle 'jellybeans.vim'
+Bundle 'git@github.com:tomasr/molokai.git'
+Bundle 'git@github.com:hail2u/h2u_colorscheme.git'
+Bundle 'vim-scripts/moria'
+Bundle 'endel/vim-github-colorscheme'
+
 "gitのHEADからの差分を表示
 Bundle 'airblade/vim-gitgutter'
 let g:gitgutter_sign_added = '✚ '
@@ -378,14 +389,22 @@ let g:gitgutter_sign_removed = '✘ '
 nnoremap <silent> ,gg :<C-u>GitGutterToggle<CR>
 nnoremap <silent> ,gh :<C-u>GitGutterLineHighlightsToggle<CR>
 
-"Bundle 'jelera/vim-javascript-syntax'
+"Syntax
 Bundle "pangloss/vim-javascript"
 Bundle 'teramako/jscomplete-vim'
+Bundle 'JulesWang/css.vim'
 Bundle 'cakebaker/scss-syntax.vim'
 Bundle 'hokaccha/vim-html5validator'
+Bundle 'digitaltoad/vim-jade'
+Bundle 'vim-scripts/vim-stylus'
+
+"Calendar.vim
+Bundle 'itchyny/calendar.vim'
+let g:calendar_views = [ 'year', 'month', 'day_3', 'clock' ]
+let g:calendar_google_calendar = 1
+let g:calendar_google_task = 1
 
 " vim-scripts repos
 Bundle 'L9'
 Bundle 'FuzzyFinder'
 filetype plugin indent on
-

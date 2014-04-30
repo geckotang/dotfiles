@@ -2,9 +2,10 @@
 	name = geckotang
 	email = macky1207@gmail.com
 [alias]
-	ignore = !"f( { local s=$1; shift; \
+        delete-merged-branches = !git branch --merged | grep -v \\* | xargs -I % git branch -d %
+	ignore = !"f() { local s=$1; shift; \
 		while [ $# -gt 0 ]; do s="$s,$1"; shift; done;\
-		curl "http://gitignore.io/api/$s"; }; f"
+		curl "http://www.gitignore.io/api/$s"; }; f"
 	a = !git add . && git status
 	aa = !git add -A && git status
 	b = branch -a
