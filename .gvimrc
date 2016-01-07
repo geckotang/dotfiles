@@ -47,8 +47,12 @@ set mousehide
 "
 "colorscheme wombat
 "
-colorscheme jellybeans
-let g:jellybeans_use_lowcolor_black = 0
+"colorscheme jellybeans
+"let g:jellybeans_use_lowcolor_black = 0
+
+set t_Co=256
+colorscheme atom-dark
+"colorscheme BusyBee
 
 "colorscheme molokai
 "let g:molokai_original = 1
@@ -62,7 +66,7 @@ let g:jellybeans_use_lowcolor_black = 0
 
 set background=dark
 if has('gui_macvim')
-  set transparency=10
+  set transparency=13
 endif
 
 "---------------------------------------------------------------------------

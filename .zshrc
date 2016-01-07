@@ -12,6 +12,9 @@ zstyle ':vcs_info:git:*' stagedstr "+"
 zstyle ':vcs_info:git:*' unstagedstr "*"
 zstyle ':vcs_info:*' formats '%{${fg[red]}%}(%s %b%{${fg[cyan]}%}%c%u%{${fg[red]}%}) %{$reset_color%}'
 
+autoload -Uz zmv
+alias zmv='noglob zmv -W'
+
 #hub
 #function git(){hub "$@"}
 
@@ -123,6 +126,11 @@ function server() {
   # And serve everything as UTF-8 (although not technically correct, this doesn’t break anything for binary files)
   python -c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=UTF-8";\nSimpleHTTPServer.test();' "$port"
 }
+function server-sjis() {
+  local port="${1:-8000}"
+  sleep 1 && open "http://localhost:${port}/" &
+  python -c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=Shift_JIS";\nSimpleHTTPServer.test();' "$port"
+}
 
 # iOSシミュレータ起動
 function mobile-safari() {
@@ -137,3 +145,27 @@ function mobile-safari() {
 
 # 個別設定を読み込む
 [ -f ~/.zshrc_local ] && source ~/.zshrc_local
+
+#THIS MUST BE AT THE END OF THE FILE FOR GVM TO WORK!!!
+[[ -s "/Users/geckotang/.gvm/bin/gvm-init.sh" ]] && source "/Users/geckotang/.gvm/bin/gvm-init.sh"
+
+#差分を抽出
+function git_diff_archive() {
+  local diff=""
+  local h="HEAD"
+  if [ $# -eq 1 ]; then
+    if expr "$1" : '[0-9]*$' > /dev/null ; then
+      diff="HEAD HEAD~${1}"
+    else
+      diff="HEAD ${1}"
+    fi
+  elif [ $# -eq 2 ]; then
+    diff="${1} ${2}"
+    h=$1
+  fi
+  if [ "$diff" != "" ]; then
+    diff="git diff --name-only ${diff}"
+  fi
+  git archive --format=zip --prefix=root/ $h `eval $diff` -o archive.zip
+  #git archive --format=zip --prefix=root/ HEAD `git diff --diff-filter=D --name-only HEAD HEAD^` -o archive.zip
+}

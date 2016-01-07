@@ -1,3 +1,6 @@
+let mapleader = ","
+" ,のデフォルトの機能は、\で使えるように退避
+noremap \  ,
 "---------------------------------------------------------------------------
 " lightline
 let g:lightline = {
@@ -84,13 +87,13 @@ set incsearch
 " 編集に関する設定:
 "
 " タブの画面上での幅
-set tabstop=8
+set tabstop=2
 " タブ幅
-set softtabstop=8
+set softtabstop=2
 " タブを挿入するときの幅
-set shiftwidth=8
+set shiftwidth=2
 " タブをスペースに展開しない (expandtab:展開する)
-set noexpandtab
+set expandtab
 " 自動的にインデントする (noautoindent:インデントしない)
 set autoindent
 " バックスペースでインデントや改行を削除できるようにする
@@ -180,6 +183,20 @@ vnoremap <S-Left> <Left>
 vnoremap <S-Right> <Right>
 vnoremap <Left> v<Left>
 vnoremap <Right> v<Right>
+
+"エスケープキー
+inoremap <C-j> <esc>
+vnoremap <C-j> <esc>
+
+"保存
+nnoremap <Space>w :<C-u>write<CR>
+
+"終了
+nnoremap <Space>q :<C-u>quit<CR>
+
+" Moving selection
+xmap <C-k> :mo'<-- <CR> gv
+xmap <C-j> :mo'>+ <CR> gv
  
 "nnoremap <tab> f=2l
 "nnoremap <s-tab> 2F=2l
@@ -268,7 +285,7 @@ augroup END
 " fileencode を設定
 set encoding=utf-8
 set fileencoding=utf-8
-set fileencodings=iso-2022-jp,utf-8,cp932,euc-jp,default,latin
+set fileencodings=iso-2022-jp,utf-8,sjis,cp932,euc-jp,default,latin
 " filetype を検出
 filetype on
  
@@ -311,7 +328,7 @@ imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 
 " SuperTab like snippets behavior.
-" imap <expr><TAB> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+imap <expr><TAB> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
 imap <expr><TAB> pumvisible() ? "\<C-n>" : neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 smap <expr><TAB> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
@@ -345,11 +362,19 @@ let g:quickrun_config.markdown = {
       \ }
 
 "---------------------------------------------------------------------------
+" spell check
+set spelllang+=cjk
+set spell
+
+"---------------------------------------------------------------------------
 " Filetype
-autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+au BufNewFile,BufRead,BufReadPre *.inc set filetype=html
+au BufNewFile,BufRead,BufReadPre *.{md,mdwn,mkd,mkdn,mark*,text,txt} set filetype=markdown
 au BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
 au BufRead,BufNewFile,BufReadPre *.jade   set filetype=jade
 au BufRead,BufNewFile,BufReadPre *.styl   set filetype=sass
+au BufRead,BufNewFile,BufReadPre *.{handlebars,hbs} set filetype=html syntax=html
+autocmd FileType markdown hi! def link markdownItalic LineNr
 
 "---------------------------------------------------------------------------
 " Vundle
@@ -365,7 +390,6 @@ Bundle 'thinca/vim-quickrun'
 Bundle 'itchyny/lightline.vim'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-surround'
-Bundle 'tpope/vim-markdown'
 Bundle 'scrooloose/nerdtree'
 Bundle 'mattn/emmet-vim'
 Bundle 'itchyny/landscape.vim'
@@ -386,6 +410,7 @@ Bundle 'airblade/vim-gitgutter'
 let g:gitgutter_sign_added = '✚ '
 let g:gitgutter_sign_modified = '➜ '
 let g:gitgutter_sign_removed = '✘ '
+let g:gitgutter_max_signs = 1000
 nnoremap <silent> ,gg :<C-u>GitGutterToggle<CR>
 nnoremap <silent> ,gh :<C-u>GitGutterLineHighlightsToggle<CR>
 
@@ -397,6 +422,28 @@ Bundle 'cakebaker/scss-syntax.vim'
 Bundle 'hokaccha/vim-html5validator'
 Bundle 'digitaltoad/vim-jade'
 Bundle 'vim-scripts/vim-stylus'
+Bundle 'mustache/vim-mustache-handlebars'
+let g:mustache_abbreviations = 1
+
+"Easymotion
+Bundle 'haya14busa/vim-easymotion'
+" デフォルトのキーバインドを解除
+let g:EasyMotion_do_mapping = 0
+let g:EasyMotion_keys = ';HKLYUIOPNM,QWERTASDGZXCVBJF'
+let g:EasyMotion_use_upper = 1
+let g:EasyMotion_smartcase = 1
+nmap e <Plug>(easymotion-s2)
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+let g:EasyMotion_use_migemo = 1
+let g:EasyMotion_startofline=0
+nmap s <Plug>(easymotion-s)
+vmap s <Plug>(easymotion-s)
+omap z <Plug>(easymotion-s) 
+" :h easymotion-command-line
+nmap g/ <Plug>(easymotion-sn)
+xmap g/ <Plug>(easymotion-sn)
+omap g/ <Plug>(easymotion-tn)
 
 "Calendar.vim
 Bundle 'itchyny/calendar.vim'
@@ -408,3 +455,78 @@ let g:calendar_google_task = 1
 Bundle 'L9'
 Bundle 'FuzzyFinder'
 filetype plugin indent on
+
+
+"---------------------------------------------------------------------------
+" Markdown
+Bundle 'godlygeek/tabular'
+Bundle 'joker1007/vim-markdown-quote-syntax'
+Bundle 'rcmdnk/vim-markdown'
+let g:vim_markdown_liquid=1
+let g:vim_markdown_frontmatter=1
+let g:vim_markdown_math=1
+let g:markdown_quote_syntax_filetypes = {
+        \ "coffee" : {
+        \   "start" : "coffee",
+        \},
+        \ "html" : {
+        \   "start" : "html",
+        \},
+        \ "scss" : {
+        \   "start" : "scss",
+        \},
+        \ "css" : {
+        \   "start" : "css",
+        \},
+  \}
+hi link htmlItalic LineNr
+hi link htmlBold WarningMsg
+hi link htmlBoldItalic ErrorMsg
+
+Bundle 'gosukiwi/vim-atom-dark'
+Bundle 'vim-scripts/BusyBee'
+
+"---------------------------------------------------------------------------
+" CSS
+Bundle 'rstacruz/vim-hyperstyle'
+
+"---------------------------------------------------------------------------
+" Check Syntax
+Bundle 'scrooloose/syntastic'
+let g:syntastic_mode_map = {
+\ "mode" : "active",
+\ "active_filetypes" : ["javascript", "json"],
+\}
+Bundle 'wakatime/vim-wakatime'
+
+"---------------------------------------------------------------------------
+" Memo App
+Bundle 'glidenote/memolist.vim'
+let g:memolist_path = "/Users/geckotang/Dropbox/Memolist"
+" suffix type (default markdown)
+let g:memolist_memo_suffix = "md"
+" date format (default %Y-%m-%d %H:%M)
+let g:memolist_memo_date = "%Y-%m-%d %H:%M"
+" tags prompt (default 0)
+let g:memolist_prompt_tags = 1
+" categories prompt (default 0)
+let g:memolist_prompt_categories = 1
+" use qfixgrep (default 0)
+let g:memolist_qfixgrep = 0
+" use vimfler (default 0)
+let g:memolist_vimfiler = 0
+" remove filename prefix (default 0)
+let g:memolist_filename_prefix_none = 0
+" use unite (default 0)
+let g:memolist_unite = 0
+" use arbitrary unite source (default is 'file')
+let g:memolist_unite_source = "file"
+" use arbitrary unite option (default is empty)
+"let g:memolist_unite_option = "-auto-preview -start-insert"
+" use various Ex commands (default '')
+"let g:memolist_ex_cmd = 'CtrlP'
+let g:memolist_ex_cmd = 'NERDTree'
+map <Space>mn  :MemoNew<CR>
+map <Space>ml  :MemoList<CR>
+map <Space>mg  :MemoGrep<CR>
+nmap mf  :FufFile <C-r>=expand(g:memolist_path."/")<CR><CR>

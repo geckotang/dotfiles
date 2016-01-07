@@ -2,7 +2,7 @@
 bind generic G move-last-line
 
 # main viewの左端にコミットIDを表示する
-set show-id = yes
+# set show-id = yes
 
 # コミットのときdiffを表示する
 bind generic C !git commit -v

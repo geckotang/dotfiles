@@ -22,7 +22,7 @@
 	st = stash
 [core]
 	editor = /usr/bin/vim -c \"set fenc=utf-8\"
-	excludesfile = ~/.gitignore_global
+	excludesfile = /Users/geckotang/.gitignore
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path = 
@@ -39,3 +39,7 @@
 	diff = diff-highlight | less
 [push]
 	default = simple
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
